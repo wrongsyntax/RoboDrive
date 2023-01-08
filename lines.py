@@ -5,10 +5,10 @@ import serial
 import filter
 
 
-NAME = "IMG_0110"
+# NAME = "IMG_0110"
 
 
-def find_dir():
+def find_dir(NAME):
     filter.create_mask(NAME)
 
     img = cv.imread(f"./masks/{NAME}_mask.jpeg")
@@ -78,24 +78,35 @@ def find_dir():
             right_dist = x - img.shape[1] // 2
             break
 
+    return left_dist, right_dist
 
-com = serial.Serial("/dev/cu.usbmodem14201", 115200)
-print(com.name, "\n", com)
+
+# com = serial.Serial("/dev/cu.usbmodem14201", 115200)
+# print(com.name, "\n", com)
 
 
 def make_turn_decision(left_dist, right_dist):
     if left_dist < right_dist:
         print("go right")
-        com.write(b"right\r\n")
+        # com.write(b"right\r\n")
     else:
         print("go left")
-        com.write(b"left\r\n")
+        # com.write(b"left\r\n")
+
+# for i in range(7):
+#     try:
+#         name = f"route{i+1}"
+#         lef, rig = find_dir(name)
+#         make_turn_decision(lef, rig)
+#     except TypeError:
+#         print("line not found, skipping frame")
+
+# while True:
+#     # take image frame
+#     # find lines
+#     # stop if needed
+#     # move left or right
+#     # take next frame
+#     pass
 
 
-while True:
-    # take image frame
-    # find lines
-    # stop if needed
-    # move left or right
-    # take next frame
-    pass
