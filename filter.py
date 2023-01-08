@@ -21,7 +21,9 @@ def create_mask(filename):
     res = cv.bitwise_and(img, img, mask=mask)
 
     # crop image
-    cropped_mask = mask[2000:2500, 0:4032]
+    third = (2*img.shape[0])//3
+    # third doesn't work yet
+    cropped_mask = mask[2000:2500, 0:img.shape[1]]
 
     # write image to file
     cv.imwrite(f"./masks/{NAME}_mask.jpeg", cropped_mask)

@@ -53,7 +53,31 @@ for r_theta in lines:
     # (0,0,255) denotes the colour of the line to be
     # drawn. In this case, it is red.
     cv.line(img, (x1, y1), (x2, y2), (0, 255, 0), 5)
+    # centre line
+    cv.line(img, (img.shape[1]//2, 0), (img.shape[1]//2, 500), (0, 0, 255), 3)
 
 # All the changes made in the input image are finally
 # written on a new image houghlines.jpg
 cv.imwrite(f"./lines/{NAME}_lines.jpeg", img)
+
+# check which side is offset then compute which way to turns
+left_dist = 0
+right_dist = 0
+
+for x in range(img.shape[1]//2, 0, -1):
+    # print(img[img.shape[0]//2, x])
+    if np.array(img[img.shape[0]//2][x] == np.array([255, 255, 255])).all():
+        left_dist = img.shape[1]//2 - x
+        break
+
+for x in range(img.shape[1]//2, img.shape[1]):
+    if np.array(img[img.shape[0]//2][x] == np.array([255, 255, 255])).all():
+        right_dist = x - img.shape[1]//2
+        break
+
+print(f"{left_dist = }\n{right_dist = }")
+        
+if left_dist < right_dist:
+    print("go right")
+else:
+    print("go left")
