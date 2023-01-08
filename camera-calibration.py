@@ -47,18 +47,24 @@ cv.destroyAllWindows()
 # Do the calibration
 ret, mtx, dist, rvecs, tvecs = cv.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
 
-img = cv.imread(images[0])
-h,  w = img.shape[:2]
-newcameramtx, roi = cv.getOptimalNewCameraMatrix(mtx, dist, (w,h), 1, (w,h))
+# img = cv.imread(images[0])
+# h,  w = img.shape[:2]
+# newmtx, roi = cv.getOptimalNewCameraMatrix(mtx, dist, (w,h), 1, (w,h))
 
 
 # undistort
-dst = cv.undistort(img, mtx, dist, None, newcameramtx)
+# dst = cv.undistort(img, mtx, dist, None, newmtx)
 
+with open('mtx.pickle', 'wb') as fh:
+    pickle.dump(mtx, fh)
+with open('dist.pickle', 'wb') as fh:
+    pickle.dump(dist, fh)
+# with open('newmtx.pickle', 'wb') as fh:
+#     pickle.dump(newmtx, fh)
+# with open('dst.pickle', 'wb') as fh:
+#     pickle.dump(dst, fh)
 
 # crop the image
-x, y, w, h = roi
-dst = dst[y:y+h, x:x+w]
-cv.imwrite('_resultant-image.png', dst)
-with open('dst.pickle', 'wb') as fh:
-    pickle.dump(dst, fh)
+# x, y, w, h = roi
+# dst = dst[y:y+h, x:x+w]
+# cv.imwrite('_resultant-image.png', dst)
