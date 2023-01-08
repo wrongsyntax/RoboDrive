@@ -20,6 +20,7 @@ def undistort(img_path):
     # cropping
     x, y, w, h = roi
     und = und[y:y+h, x:x+w]
+    # return cv.imshow('image.png', und)
     return cv.imshow('image.png', und)
 
 
