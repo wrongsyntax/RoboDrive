@@ -2,25 +2,33 @@ import numpy as np
 import cv2 as cv
 import glob
 import os
+import pickle
 
 # termination criteria
 criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 
+across = 4
+updown = 4
+
 # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
-objp = np.zeros((6*7,3), np.float32)
-objp[:,:2] = np.mgrid[0:7,0:6].T.reshape(-1,2)
+objp = np.zeros((across*updown,3), np.float32)
+objp[:,:2] = np.mgrid[0:across,0:updown].T.reshape(-1,2)
 
 # Arrays to store object points and image points from all the images.
 objpoints = [] # 3d point in real world space
 imgpoints = [] # 2d points in image plane.
-images = ['C:\\Path\\to\\pic\\here']
 
-for fname in images:
-    img = cv.imread(fname)
+u = 11
+v = 194
+
+images = ['C:\\Users\\sugar\\Desktop\\Projects\\HackED 2023\\Camera Write + Calibration + Undistortion\\frame51.jpg']
+
+for frame in images:
+    img = cv.imread(frame)
     gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 
     # Find the chess board corners
-    ret, corners = cv.findChessboardCorners(gray, (5,5), None)
+    ret, corners = cv.findChessboardCorners(gray, (across,updown), None)
 
     # If found, add object points, image points (after refining them)
     if ret == True:
@@ -29,7 +37,7 @@ for fname in images:
         imgpoints.append(corners)
 
         # Draw and display the corners
-        cv.drawChessboardCorners(img, (5,5), corners2, ret)
+        cv.drawChessboardCorners(img, (across,updown), corners2, ret)
         cv.imshow('img', img)
         cv.waitKey(500)
 
@@ -51,4 +59,6 @@ dst = cv.undistort(img, mtx, dist, None, newcameramtx)
 # crop the image
 x, y, w, h = roi
 dst = dst[y:y+h, x:x+w]
-cv.imwrite('method1.png', dst)
+cv.imwrite('_resultant-image.png', dst)
+with open('dst.pickle', 'wb') as fh:
+    pickle.dump(dst, fh)
