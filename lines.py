@@ -4,7 +4,7 @@ import numpy as np
 import filter
 
 
-NAME = "IMG_0111"
+NAME = "IMG_0114"
 
 filter.create_mask(NAME)
 
@@ -14,9 +14,11 @@ grayscale = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 # cv.imwrite("gray.jpeg", grayscale)
 
 # Apply edge detection method on the image
-edges = cv.Canny(grayscale, 100, 500)
+low_thresh = 2
+ratio = 76
+edges = cv.Canny(grayscale, low_thresh, low_thresh*ratio, apertureSize=3)
 # This returns an array of r and theta values
-lines = cv.HoughLines(edges, 1, np.pi / 180, 200)
+lines = cv.HoughLines(edges, 1, np.pi / 170, 200)
 
 # The below for loop runs till r and theta values
 # are in the range of the 2d array
@@ -50,7 +52,7 @@ for r_theta in lines:
     # cv.line draws a line in img from the point(x1,y1) to (x2,y2).
     # (0,0,255) denotes the colour of the line to be
     # drawn. In this case, it is red.
-    cv.line(img, (x1, y1), (x2, y2), (0, 0, 255), 2)
+    cv.line(img, (x1, y1), (x2, y2), (0, 255, 0), 5)
 
 # All the changes made in the input image are finally
 # written on a new image houghlines.jpg
